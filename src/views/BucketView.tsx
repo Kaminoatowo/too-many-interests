@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import type { DragEndEvent } from '@dnd-kit/core';
-import type { BucketId } from '../storage';
+import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
+import type { Activity, BucketId } from '../storage';
 import { BucketColumn } from '../components/BucketColumn';
+import { ActivityCard } from '../components/ActivityCard';
 import { useAppState } from '../hooks/useAppState';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 export function BucketView({ appState }: Props) {
   const { activities, addActivity, removeActivity, renameActivity, moveActivity } = appState;
   const [input, setInput] = useState('');
+  const [draggingActivity, setDraggingActivity] = useState<Activity | null>(null);
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
 
@@ -22,7 +24,13 @@ export function BucketView({ appState }: Props) {
     setInput('');
   };
 
+  const handleDragStart = (event: DragStartEvent) => {
+    const activity = activities.find(a => a.id === event.active.id);
+    setDraggingActivity(activity ?? null);
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
+    setDraggingActivity(null);
     const { active, over } = event;
     if (!over) return;
     const overId = String(over.id);
@@ -39,15 +47,15 @@ export function BucketView({ appState }: Props) {
           onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleAdd()}
           placeholder="Aggiungi un'attività... (invio per confermare)"
-          className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm bg-white dark:bg-gray-800 dark:text-white outline-none focus:ring-2 focus:ring-teal-400"
+          className="flex-1 px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg text-sm bg-white dark:bg-gray-800 dark:text-white outline-none focus:ring-2 focus:ring-indigo-400"
         />
         <button
           onClick={handleAdd}
-          className="px-4 py-2 bg-teal-500 text-white rounded-lg text-sm font-medium hover:bg-teal-600 transition-colors"
+          className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors"
         >Aggiungi</button>
       </div>
 
-      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+      <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {([1, 2, 3] as BucketId[]).map(b => (
             <BucketColumn
@@ -60,6 +68,19 @@ export function BucketView({ appState }: Props) {
             />
           ))}
         </div>
+
+        <DragOverlay dropAnimation={null}>
+          {draggingActivity && (
+            <div className="rotate-1 shadow-xl opacity-95">
+              <ActivityCard
+                activity={draggingActivity}
+                onRename={() => {}}
+                onRemove={() => {}}
+                onMove={() => {}}
+              />
+            </div>
+          )}
+        </DragOverlay>
       </DndContext>
     </div>
   );

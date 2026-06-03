@@ -50,6 +50,28 @@ export function useAppState() {
     });
   }, [update]);
 
+  const setRREvent = useCallback((dayIndex: number, slotIndex: number, place: boolean) => {
+    update(s => {
+      const existing = s.calendarEvents.find(e => e.dayIndex === dayIndex && e.slotIndex === slotIndex);
+      if (!place) {
+        return { ...s, calendarEvents: s.calendarEvents.filter(e => !(e.dayIndex === dayIndex && e.slotIndex === slotIndex)) };
+      }
+      if (existing) {
+        // replace whatever is there with an R&R event
+        return {
+          ...s,
+          calendarEvents: s.calendarEvents.map(e =>
+            e.dayIndex === dayIndex && e.slotIndex === slotIndex
+              ? { ...e, kind: 'rr' as const, activityId: null, label: 'R&R' }
+              : e
+          ),
+        };
+      }
+      const event: CalendarEvent = { id: crypto.randomUUID(), dayIndex, slotIndex, activityId: null, kind: 'rr', label: 'R&R' };
+      return { ...s, calendarEvents: [...s.calendarEvents, event] };
+    });
+  }, [update]);
+
   const addReviewNote = useCallback((body: string) => {
     const note: ReviewNote = { id: crypto.randomUUID(), createdAt: new Date().toISOString(), body };
     update(s => ({ ...s, reviewNotes: [note, ...s.reviewNotes] }));
@@ -78,6 +100,7 @@ export function useAppState() {
     renameActivity,
     moveActivity,
     setCalendarEvent,
+    setRREvent,
     addReviewNote,
     updateReviewNote,
     removeReviewNote,

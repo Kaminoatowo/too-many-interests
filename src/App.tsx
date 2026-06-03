@@ -28,7 +28,7 @@ export default function App() {
                 onClick={() => setTab(t.id)}
                 className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors
                   ${tab === t.id
-                    ? 'bg-teal-100 text-teal-700 dark:bg-teal-900 dark:text-teal-300'
+                    ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300'
                     : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
                   }`}
               >{t.label}</button>
