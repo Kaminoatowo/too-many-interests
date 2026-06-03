@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, DragOverlay, PointerSensor, TouchSensor, useSensor, useSensors } from '@dnd-kit/core';
 import type { DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import type { Activity, BucketId } from '../storage';
 import { BucketColumn } from '../components/BucketColumn';
@@ -15,7 +15,10 @@ export function BucketView({ appState }: Props) {
   const [input, setInput] = useState('');
   const [draggingActivity, setDraggingActivity] = useState<Activity | null>(null);
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 8 } }));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 8 } }),
+  );
 
   const handleAdd = () => {
     const name = input.trim();
