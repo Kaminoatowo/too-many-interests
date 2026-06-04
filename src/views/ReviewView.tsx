@@ -62,7 +62,7 @@ export function ReviewView({ appState }: Props) {
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="px-4 py-6 md:px-6 max-w-2xl mx-auto w-full">
 
       {/* R&R countdown banner */}
       <div className={`mb-8 flex items-center gap-4 px-5 py-4 rounded-lg border border-dashed

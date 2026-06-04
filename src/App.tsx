@@ -64,16 +64,16 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 overscroll-none">
       <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center gap-6">
-          <h1 className="text-xl font-bold tracking-tight">Bucket</h1>
-          <nav className="flex gap-1">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center gap-3 md:gap-6">
+          <h1 className="text-lg md:text-xl font-bold tracking-tight shrink-0">Bucket</h1>
+          <nav className="flex gap-0.5 md:gap-1 overflow-x-auto">
             {tabs.map(t => (
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors
+                className={`px-3 md:px-4 py-1.5 rounded-md text-sm font-medium transition-colors whitespace-nowrap
                   ${tab === t.id
                     ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300'
                     : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
@@ -83,29 +83,29 @@ export default function App() {
           </nav>
 
           {/* Export / Import */}
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-1.5 shrink-0">
             <button
               onClick={handleExport}
               title="Esporta dati come JSON"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             >
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M6.5 1v8M3.5 6l3 3 3-3" />
                 <path d="M1.5 10.5v1h10v-1" />
               </svg>
-              Esporta
+              <span className="hidden sm:inline">Esporta</span>
             </button>
 
             <button
               onClick={() => fileInputRef.current?.click()}
               title="Importa dati da JSON"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
             >
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M6.5 9V1M3.5 4l3-3 3 3" />
                 <path d="M1.5 10.5v1h10v-1" />
               </svg>
-              Importa
+              <span className="hidden sm:inline">Importa</span>
             </button>
             <input
               ref={fileInputRef}

@@ -43,7 +43,7 @@ export function BucketView({ appState }: Props) {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="px-4 py-6 md:px-6 max-w-6xl mx-auto w-full">
       <div className="mb-6 flex gap-2">
         <input
           value={input}

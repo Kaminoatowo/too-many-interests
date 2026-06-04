@@ -73,7 +73,7 @@ export function CalendarView({ appState, onNavigateToReview }: Props) {
   const daysLeft = daysUntil(nextRR);
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="px-4 py-6 md:px-6 max-w-6xl mx-auto w-full">
       {/* Summary row */}
       <div className="mb-6 flex gap-3 flex-wrap items-center">
         {summary.map(({ bucket, hours }) => {
@@ -90,28 +90,28 @@ export function CalendarView({ appState, onNavigateToReview }: Props) {
         {totalHours === 0 && <div className="text-sm text-gray-400">Nessuno slot pianificato</div>}
 
         {/* R&R next date chip */}
-        <div className="ml-auto flex items-center gap-2 px-4 py-2 rounded-lg border border-dashed border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-500 dark:text-gray-400">
+        <div className="w-full sm:w-auto sm:ml-auto flex items-center gap-2 px-3 py-2 rounded-lg border border-dashed border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-xs text-gray-500 dark:text-gray-400">
           <span>⟳</span>
           <span>
             Prossimo R&R: <strong className="text-gray-700 dark:text-gray-200">{formatDate(nextRR)}</strong>
-            <span className="ml-1 text-gray-400">({daysLeft === 0 ? 'oggi' : `fra ${daysLeft} giorni`})</span>
+            <span className="ml-1 text-gray-400">({daysLeft === 0 ? 'oggi' : `fra ${daysLeft}g`})</span>
           </span>
         </div>
       </div>
 
       {/* Grid */}
-      <div className="overflow-x-auto" ref={popupRef}>
-        <div className="grid min-w-[600px]" style={{ gridTemplateColumns: `60px repeat(7, 1fr)` }}>
+      <div className="overflow-x-auto overscroll-x-contain -mx-4 px-4 md:mx-0 md:px-0" ref={popupRef}>
+        <div className="grid min-w-[520px]" style={{ gridTemplateColumns: `48px repeat(7, 1fr)` }}>
           {/* Header */}
           <div />
           {DAYS.map(d => (
-            <div key={d} className="text-center text-xs font-semibold text-gray-500 dark:text-gray-400 py-2">{d}</div>
+            <div key={d} className="text-center text-xs font-semibold text-gray-500 dark:text-gray-400 py-2 px-0.5">{d}</div>
           ))}
 
           {/* Rows */}
           {Array.from({ length: SLOTS_PER_DAY }, (_, slot) => (
             <>
-              <div key={`label-${slot}`} className="text-xs text-gray-400 flex items-center justify-end pr-2 py-1">
+              <div key={`label-${slot}`} className="text-xs text-gray-400 flex items-center justify-end pr-1 py-1 leading-tight">
                 {SLOT_LABELS[slot]}
               </div>
               {Array.from({ length: 7 }, (_, day) => {
@@ -134,7 +134,7 @@ export function CalendarView({ appState, onNavigateToReview }: Props) {
                         setActiveCell(isCellActive ? null : { day, slot });
                         setRRPopup(null);
                       }}
-                      className={`w-full h-12 rounded text-xs font-medium transition-colors border
+                      className={`w-full h-10 md:h-12 rounded text-xs font-medium transition-colors border
                         ${isRR
                           ? 'border-dashed border-gray-400 dark:border-gray-500 bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                           : cfg
